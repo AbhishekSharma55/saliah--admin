@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider } from "@/components/Provider/SidebarProvider";
 import { UserProvider } from "@/components/Providers/user-provider";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
 
+<Suspense fallback={<h1>Loading....</h1>}></Suspense>
         <UserProvider>
         <SidebarProvider>
           {children}
