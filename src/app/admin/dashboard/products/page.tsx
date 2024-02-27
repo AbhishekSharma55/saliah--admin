@@ -11,7 +11,7 @@ export default async function ProductPage() {
     // );
     // const data = await res.json();
 
-    const { data } = await axios.get("/api/products")
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`)
 
     // const data = await getData();
 
