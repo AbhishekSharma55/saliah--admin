@@ -1,5 +1,5 @@
 "use client";
-
+import moment from "moment";
 import {
     ColumnDef,
     SortingState,
@@ -10,7 +10,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-import { ArrowUpDown, Pencil, PlusSquare, Trash2 } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import {
     Table,
     TableBody,
@@ -19,102 +19,81 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
-import Image from "next/image";
-import { MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ProductSchema } from "@/lib/db/models/products.model";
+import { IOrder } from "@/lib/db/models/order.model";
 import { SidebarButton } from "../Provider/SidebarProvider";
 
-export function ProductDataTable({ data }: { data: ProductSchema[] }) {
+export function OrderTable({ data }: { data: IOrder[] }) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const router = useRouter();
-    const columns: ColumnDef<ProductSchema>[] = [
+    const columns: ColumnDef<IOrder>[] = [
         {
-            header: "Image",
-            accessorFn: (row: ProductSchema) => row.images[0],
-            cell: (row) => (
-                <Image
-                    width={50}
-                    height={50}
-                    //@ts-ignore
-                    src={row.getValue()}
-                    alt="Products"
-                />
-            ),
-        },
-        {
-            accessorKey: "product",
+            accessorKey: "email",
             header: ({ column }) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Product
+                        Email
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
             },
         },
         {
-            accessorKey: "price_range.min_price",
-            header: (data) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() =>
-                            data.column.toggleSorting(data.column.getIsSorted() === "asc")
-                        }
-                    >
-                        Price Range
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                );
-            },
-            cell: ({ row }) => (
-                <>
-                    {row.original?.price_range?.min_price || 0} -{" "}
-                    {row.original?.price_range?.max_price}{" "}
-                </>
-            ),
-        },
-        {
-            accessorKey: "quantity",
+            accessorKey: "city",
             header: ({ column }) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Quantity
+                        CIty
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
             },
         },
         {
-            accessorKey: "category",
+            accessorKey: "state",
             header: ({ column }) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Category
+                        State
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                );
+            },
+        },
+        {
+            accessorKey: "pinCode",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        PinCode
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                );
+            },
+        },
+        {
+            accessorKey: "status",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Status
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -122,41 +101,57 @@ export function ProductDataTable({ data }: { data: ProductSchema[] }) {
         },
 
         {
-            id: "actions",
-            cell: ({ row }) => {
-                const id = row.original._id;
-
+            header: ({ column }) => {
                 return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem asChild>
-                                    <Link
-                                        className="flex items-center cursor-pointer"
-                                        href={`/admin/dashboard/products/product?type=edit&_id=${id}`}
-                                    >
-                                        <Pencil className="mr-2 h-4 w-4" />
-                                        <span>Edit</span>
-                                    </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="text-destructive cursor-pointer">
-                                    <Trash2 className="mr-2  h-4 w-4" />
-                                    <span>Delete</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Date
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
                 );
             },
+            accessorKey: "createdAt",
+            cell: (row) => <>{moment(row.getValue() || "").format("DD-MM-YYYY")}</>,
         },
+
+        // {
+        //   id: "actions",
+        //   cell: ({ row }) => {
+        //     const id = row.id;
+
+        //     return (
+        //       <DropdownMenu>
+        //         <DropdownMenuTrigger asChild>
+        //           <Button variant="ghost" className="h-8 w-8 p-0">
+        //             <span className="sr-only">Open menu</span>
+        //             <MoreHorizontal className="h-4 w-4" />
+        //           </Button>
+        //         </DropdownMenuTrigger>
+        //         <DropdownMenuContent className="w-56">
+        //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        //           <DropdownMenuSeparator />
+        //           <DropdownMenuGroup>
+        //             <DropdownMenuItem asChild>
+        //               <Link
+        //                 className="flex items-center cursor-pointer"
+        //                 href={`/admin/dashboard/product?type=edit&_id=${id}`}
+        //               >
+        //                 <Pencil className="mr-2 h-4 w-4" />
+        //                 <span>Edit</span>
+        //               </Link>
+        //             </DropdownMenuItem>
+        //             <DropdownMenuItem className="text-destructive cursor-pointer">
+        //               <Trash2 className="mr-2  h-4 w-4" />
+        //               <span>Delete</span>
+        //             </DropdownMenuItem>
+        //           </DropdownMenuGroup>
+        //         </DropdownMenuContent>
+        //       </DropdownMenu>
+        //     );
+        //   },
+        // },
     ];
 
     const table = useReactTable({
@@ -173,16 +168,7 @@ export function ProductDataTable({ data }: { data: ProductSchema[] }) {
 
     return (
         <div className="rounded-md border flex-1 px-10 overflow-y-auto">
-            <div className="flex justify-between py-2">
-                <SidebarButton />
-
-                <Button
-                    onClick={() => router.push(`/admin/dashboard/products/product?type=create`)}
-                    size="icon"
-                >
-                    <PlusSquare />
-                </Button>
-            </div>
+            <SidebarButton />
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

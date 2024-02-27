@@ -35,11 +35,11 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const SidebarButton = () => {
+export const SidebarButton = ({className}:{className?:string}) => {
     const {  toggleSidebar } = useSidebar();
 
     return (
-        <Button variant={'ghost'} size={"icon"}>
+        <Button variant={'ghost'} className={className} size={"icon"}>
             <MenuIcon onClick={toggleSidebar} className="h-6 w-6 cursor-pointer" />
         </Button>
     );

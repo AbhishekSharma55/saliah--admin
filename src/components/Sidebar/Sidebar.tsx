@@ -1,29 +1,24 @@
 "use client"
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu"
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
-import { HtmlHTMLAttributes } from "react"
-import { cn } from "@/lib/utils"
 import { SidebarButton, useSidebar } from "../Provider/SidebarProvider"
 import Package2Icon from "@/Icons/Package2Icon"
 import HomeIcon from "@/Icons/HomeIcon"
 import ShoppingCartIcon from "@/Icons/ShoppingCartIcon"
 import PackageIcon from "@/Icons/PackageIcon"
-import UsersIcon from "@/Icons/UsersIcon"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 
 export default function Sidebar() {
 
     const { isSidebarOpen } = useSidebar()
+    const pathname = usePathname()
+
     return (
-        <aside className={cn(" w-80 border-r overflow-x-hidden transition-all duration-300 bg-gray-100/40 lg:block dark:bg-gray-800/40", {
-            "w-0": isSidebarOpen
-        })}>
-            <div className={cn("lg:flex transition-all duration-100 flex-col gap-2", {
-                "w-0": isSidebarOpen
-            })}>
+        <aside className={`bg-gray-100 dark:bg-gray-800 z-10 fixed top-0 bottom-0  h-screen group/sidebar lg:relative transition-all overflow-x-hidden ease-in-out duration-300  border-r-2 overflow-y-auto flex flex-col gap-y-4 ${isSidebarOpen ? "w-0 p-0" : "w-64 px-2"
+            } `}>
+            <div className={"lg:flex transition-all duration-100 flex-col gap-2"}>
+                <SidebarButton className="lg:hidden" />
                 <div className="flex h-[60px] w-full items-center px-6">
                     <Link className="flex items-center gap-2 font-semibold" href="#">
                         <Package2Icon className="h-6 w-6" />
@@ -33,34 +28,42 @@ export default function Sidebar() {
                 <div className="flex-1">
                     <nav className="grid items-start px-4 text-sm font-medium">
                         <Link
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                            className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" , {
+                                // "text-gray-900 dark:text-gray-50": pathname.includes("/admin/dashboard")
+                            })}
                             href="/admin/dashboard"
                         >
                             <HomeIcon className="h-4 w-4" />
                             Home
                         </Link>
                         <Link
-                            className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+                            className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50", {
+                                "text-gray-900 dark:text-gray-50": pathname.includes("/admin/dashboard/orders")
+                            })}
                             href="/admin/dashboard/orders"
                         >
                             <ShoppingCartIcon className="h-4 w-4" />
                             Orders
-                            <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">12</Badge>
+                            {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">12</Badge> */}
                         </Link>
                         <Link
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                            className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" , {
+                                "text-gray-900 dark:text-gray-50": pathname.includes("/admin/dashboard/products")
+                            })}
                             href="/admin/dashboard/products"
                         >
                             <PackageIcon className="h-4 w-4" />
                             Products
                         </Link>
-                        <Link
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                        {/* <Link
+                            className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" , {
+                                "hover:text-gray-900 dark:hover:text-gray-50":pathname.includes("")
+                            })}
                             href="/admin/dashboard/customers"
                         >
                             <UsersIcon className="h-4 w-4" />
                             Customers
-                        </Link>
+                        </Link> */}
 
                     </nav>
                 </div>
