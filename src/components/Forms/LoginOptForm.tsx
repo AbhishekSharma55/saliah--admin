@@ -28,6 +28,7 @@ import {
 import OtpInputForm from "./OtpInputForm";
 import { useUser } from "../Providers/user-provider";
 import { toast } from "sonner";
+import { UserRole } from "@/lib/db/models/user.model";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -55,17 +56,22 @@ export default function SignUpForm() {
       if (isOptSend) {
         const hash = searchParams.get("hash") || "";
         const data = await loginAction(+otp, hash, toUser);
+        console.log(data);
         if (data.error) {
           setError(data.error);
         }
         if (data.user) {
-          toast.success("Login successful");
+          router.push("/admin/dashboard/products")
           dispatch({
             type: "LOGIN",
             payload: { ...data?.user, token: data?.token },
           });
 
-          router.replace("/admin/dashboard/products")
+          if (data?.user?.role === UserRole.ADMIN) {
+            toast.success("Login successfully");
+          } else {
+            toast.error("Your are not authorized to access this page.");
+          }
         }
       } else {
         setError("");
