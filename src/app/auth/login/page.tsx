@@ -5,8 +5,8 @@ import LoginOtpForm from "@/components/Forms/LoginOptForm";
 const Login = () => {
   return (
     <>
-      <div className=" flex justify-center items-center h-screen w-screen ">
-        <div className=" border-2 rounded-lg border-muted p-4 md:p-8  md:m-auto grid gap-4">
+      <div className=" flex justify-center items-center h-screen w-screen bg-[url(/mountain.png)]">
+        <div className=" border-2 bg-primary-foreground drop-shadow-lg dark:bg-primary rounded-lg border-muted p-4 md:p-8  md:m-auto grid gap-4">
           <h2 className="text-4xl text-primary-500">Login</h2>
           <p className="text-light-500">
             Welcome back! Please enter your details.

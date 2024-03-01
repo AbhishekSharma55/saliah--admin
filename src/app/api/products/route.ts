@@ -1,6 +1,7 @@
 import { connectToDB } from "@/config/mongoose.config";
 import { Product } from "@/lib/db/models/products.model";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request) {
   await connectToDB();
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
       ).lean();
 
       if (data) {
+        revalidatePath("/admin/dashboard/products?refetch=true");
         return Response.json({ ...data, type: "Updated" });
       }
     } else {
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
       const mongooseDoc = await Product.create(body);
       data = mongooseDoc.toObject();
       if (data) {
+        revalidatePath("/admin/dashboard/products");
         return Response.json({ ...data, type: "Created" });
       } else {
         return Response.json({ error: "Something went wrong" });

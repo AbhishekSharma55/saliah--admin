@@ -56,7 +56,6 @@ export default function SignUpForm() {
       if (isOptSend) {
         const hash = searchParams.get("hash") || "";
         const data = await loginAction(+otp, hash, toUser);
-        console.log(data);
         if (data.error) {
           setError(data.error);
         }
@@ -105,7 +104,7 @@ export default function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
         {type === "email" ? (
           <FormField
             control={form.control}

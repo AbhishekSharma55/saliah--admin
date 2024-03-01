@@ -21,14 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-
-<Suspense fallback={<h1>Loading....</h1>}></Suspense>
-        <UserProvider>
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
-        </UserProvider>
-        <Toaster/>
+        <Suspense fallback={<h1>Loading....</h1>}>
+          <UserProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </UserProvider>
+          <Toaster position="top-right" />
+        </Suspense>
       </body>
     </html>
   );

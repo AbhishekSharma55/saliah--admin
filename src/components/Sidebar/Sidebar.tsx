@@ -15,7 +15,7 @@ export default function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <aside className={`bg-gray-100 dark:bg-gray-800 z-10 fixed top-0 bottom-0  h-screen group/sidebar lg:relative transition-all overflow-x-hidden ease-in-out duration-300  border-r-2 overflow-y-auto flex flex-col gap-y-4 ${isSidebarOpen ? "w-0 p-0" : "w-64 px-2"
+        <aside className={` bg-gray-100 dark:bg-gray-800 z-10 fixed top-0 bottom-0  h-screen group/sidebar lg:relative transition-all overflow-x-hidden ease-in-out duration-300  border-r-2 overflow-y-auto flex flex-col gap-y-4 ${isSidebarOpen ? "w-0 p-0" : "w-64 px-2"
             } `}>
             <div className={"lg:flex transition-all duration-100 flex-col gap-2"}>
                 <SidebarButton className="lg:hidden" />
