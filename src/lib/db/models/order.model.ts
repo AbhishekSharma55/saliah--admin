@@ -1,6 +1,16 @@
 import { Schema, model } from "mongoose";
 const mongoose = require("mongoose");
 
+// Define the enum for delivery status
+export enum DeliveryStatus {
+  Pending = "Pending",
+  Processing = "Processing",
+  InTransit = "InTransit",
+  OutForDelivery = "OutForDelivery",
+  Delivered = "Delivered",
+  Failed = "Failed",
+}
+
 export interface IOrder extends Document {
   firstName: string;
   lastName: string;
@@ -16,19 +26,25 @@ export interface IOrder extends Document {
   orderSummary: [
     {
       name?: string;
+      image?: string;
       unit?: string;
       quantity: number;
       price?: number;
       subTotal?: number;
       total: number;
       productId: string;
+      _id?: string;
     }
   ];
+  paymentStatus: string;
+  total: number;
+  totalQuantity: number;
   status: string;
   createdId: string;
   paymentId?: string;
-  createdAt: string;
   orderId: string;
+  createdAt?: string;
+  _id?: string;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -79,12 +95,14 @@ const orderSchema = new Schema<IOrder>(
     },
     orderSummary: [
       {
-        productId: String,
-        //  {
-        //   ref: "Product",
-        //   type: mongoose.Schema.Types.ObjectId,
-        //   // required: true,
-        // },
+        productId: {
+          ref: "Product",
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+        },
+        image: {
+          type: String,
+        },
         name: {
           type: String,
           required: false,
@@ -112,15 +130,28 @@ const orderSchema = new Schema<IOrder>(
         },
       },
     ],
-    // payment status
-    status: {
+    // payment paymentStatus
+    paymentStatus: {
       type: String,
       default: "Pending",
     },
+    status: {
+      type: String,
+      default: DeliveryStatus.Pending,
+    },
+
     createdId: { ref: "User", type: mongoose.Schema.Types.ObjectId },
     paymentId: {
       type: String,
       required: false,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
+    totalQuantity: {
+      type: Number,
+      required: true,
     },
 
     orderId: {
@@ -132,4 +163,4 @@ const orderSchema = new Schema<IOrder>(
 );
 
 export const OrderModel =
-  mongoose.models.Order || mongoose.model("Order", orderSchema);
+  mongoose.models?.Order || mongoose.model("Order", orderSchema);

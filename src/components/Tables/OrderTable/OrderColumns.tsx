@@ -1,3 +1,5 @@
+import { useShowOrder } from "@/Hooks/useShowOrder";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IOrder } from "@/lib/db/models/order.model";
 import { ProductSchema } from "@/lib/db/models/products.model";
+import { dateFormate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
@@ -19,22 +22,25 @@ import {
   Trash2,
 } from "lucide-react";
 import moment from "moment";
-import Image from "next/image";
 
 export const orderColumns: ColumnDef<IOrder>[] = [
-  // {
-  //   header: "Image",
-  //   accessorFn: (row: ProductSchema) => row.images[0],
-  //   cell: (row) => (
-  //     <Image
-  //       width={50}
-  //       height={50}
-  //       //@ts-ignore
-  //       src={row.getValue()}
-  //       alt="Products"
-  //     />
-  //   ),
-  // },
+  {
+    header: "Order Summary",
+    accessorFn: (row) => row.orderSummary,
+    cell: ({ row }) => {
+      const remainLength = row.original.orderSummary?.length - 1;
+      return (
+        <>
+          {row.original.orderSummary[0].name}{" "}
+          {remainLength && (
+            <Badge variant="outline" className="text-xs p-1">
+              {remainLength} More
+            </Badge>
+          )}
+        </>
+      );
+    },
+  },
   {
     accessorKey: "firstName",
     header: ({ column }) => {
@@ -64,7 +70,7 @@ export const orderColumns: ColumnDef<IOrder>[] = [
     },
   },
   {
-    accessorKey: "apartment",
+    accessorKey: "streetAddress",
     header: ({ column }) => {
       return (
         <Button
@@ -119,6 +125,7 @@ export const orderColumns: ColumnDef<IOrder>[] = [
       );
     },
   },
+
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -127,13 +134,27 @@ export const orderColumns: ColumnDef<IOrder>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Status
+          Delivery Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
 
+  {
+    accessorKey: "paymentStatus",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Payment Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
   {
     header: ({ column }) => {
       return (
@@ -147,42 +168,22 @@ export const orderColumns: ColumnDef<IOrder>[] = [
       );
     },
     accessorKey: "createdAt",
-    cell: (row) => <>{moment(row.getValue() || "").format("DD-MM-YYYY")}</>,
+    cell: (row) => <>{dateFormate(String(row?.getValue()))}</>,
   },
 
   {
     id: "actions",
     cell: ({ row }) => {
-      console.log(row.original);
-      const id = row.id;
+      const { onOpen } = useShowOrder();
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <Link
-                  className="flex items-center cursor-pointer"
-                  href={`/admin/dashboard/product?type=edit&_id=${id}`}
-                >
-                  <Pencil className="mr-2 h-4 w-4" />
-                  <span>Edit</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive cursor-pointer">
-                <Trash2 className="mr-2  h-4 w-4" />
-                <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          onClick={() => onOpen(row.original)}
+          size="icon"
+        >
+          <MoreHorizontal />
+        </Button>
       );
     },
   },

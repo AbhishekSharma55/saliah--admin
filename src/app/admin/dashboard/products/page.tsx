@@ -10,7 +10,7 @@ export default async function ProductPage() {
   );
 
   return (
-    <div className=" bg-[url(/mountain.png)] h-full">
+    <div className=" bg-[url(/mountain.png)] object-cover ">
       <ProductDataTable data={data} />;
     </div>
   );
