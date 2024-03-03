@@ -53,15 +53,15 @@ const UpdateOrderAlerts = () => {
           {orderStatus?.paymentStatus && (
             <AlertDialogDescription>
               Are you sure you want to update the{" "}
-              <span className="text-primary">payment status</span> from "
-              {order?.paymentStatus}" to "{orderStatus.paymentStatus}"?
+              <span className="text-primary">payment status</span> from &quot;
+              {order?.paymentStatus}&quot; to &quot;{orderStatus.paymentStatus}&quot;?
             </AlertDialogDescription>
           )}
           {orderStatus?.status && (
             <AlertDialogDescription>
               Are you sure you want to update the{" "}
-              <span className="text-primary">delivery status</span> from "
-              {order?.status}" to "{orderStatus?.status}"?
+              <span className="text-primary">delivery status</span> from &quot;
+              {order?.status}&quot; to &quot;{orderStatus?.status}&quot;?
             </AlertDialogDescription>
           )}
         </AlertDialogHeader>

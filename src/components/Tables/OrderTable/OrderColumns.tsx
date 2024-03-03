@@ -22,8 +22,9 @@ import {
   Trash2,
 } from "lucide-react";
 import moment from "moment";
+import MoreOptions from "./MoreOptions";
 
-export const orderColumns: ColumnDef<IOrder>[] = [
+export const OrderColumns: ColumnDef<IOrder>[] = [
   {
     header: "Order Summary",
     accessorFn: (row) => row.orderSummary,
@@ -174,17 +175,7 @@ export const orderColumns: ColumnDef<IOrder>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const { onOpen } = useShowOrder();
-
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => onOpen(row.original)}
-          size="icon"
-        >
-          <MoreHorizontal />
-        </Button>
-      );
+      return <MoreOptions order={row.original} />;
     },
   },
 ];

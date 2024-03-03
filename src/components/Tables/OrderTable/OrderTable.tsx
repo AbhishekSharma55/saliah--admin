@@ -24,7 +24,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { IOrder } from "@/lib/db/models/order.model";
 import { SidebarButton } from "../../Provider/SidebarProvider";
-import { orderColumns } from "./OrderColumns";
+import { OrderColumns } from "./OrderColumns";
 
 export function OrderTable({ data }: { data: IOrder[] }) {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -33,7 +33,7 @@ export function OrderTable({ data }: { data: IOrder[] }) {
 
     const table = useReactTable({
       data,
-      columns: orderColumns,
+      columns: OrderColumns,
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
       onSortingChange: setSorting,
@@ -87,7 +87,7 @@ export function OrderTable({ data }: { data: IOrder[] }) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={orderColumns.length}
+                  colSpan={OrderColumns.length}
                   className="h-24 text-center"
                 >
                   No results.

@@ -29,11 +29,13 @@ export const useSidebar = () => {
 // SidebarProvider component
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  
   useEffect(() => {
     if (window.innerWidth <= 720) {
       toggleSidebar();
     }
     return () => {};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleSidebar = () => {
