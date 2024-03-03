@@ -1,4 +1,4 @@
-import { OrderTable } from "@/components/Tables/OrderTable";
+import { OrderTable } from "@/components/Tables/OrderTable/OrderTable";
 import axios from "axios";
 import React from "react";
 

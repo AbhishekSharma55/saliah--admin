@@ -129,7 +129,12 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel className="text-black-800 ">Phone </FormLabel>
                 <FormControl>
-                  <Input type="tel" autoComplete="off" placeholder="Your Phone" {...field} />
+                  <Input
+                    type="tel"
+                    autoComplete="off"
+                    placeholder="Your Phone"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,13 +158,14 @@ export default function SignUpForm() {
 
       <div className="mt-2">
         <span className="text-light-500">
-          Instead of use
+          Use
           <span
             onClick={changeForm}
-            className="text-primary-500 uppercase font-semibold ml-2 cursor-pointer"
+            className=" uppercase ml-2 cursor-pointer"
           >
-            {type === "email" ? "phone" : "email"}?
+            {type === "email" ? "Phone" : "Email"}
           </span>{" "}
+          instead
         </span>
       </div>
     </Form>
