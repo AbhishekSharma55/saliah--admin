@@ -24,9 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-// import { Textarea } from "../ui/textarea";
-// import Tiptap from "./RichText/Tiptap";
-import { Pencil, PlusSquare, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { categoryOptions } from "@/data/categoryOption";
@@ -34,69 +31,9 @@ import ImageUpload from "../UploadCom/ImageUpload";
 import { ProductSchema } from "@/lib/db/models/products.model";
 import axios from "axios";
 import { SidebarButton } from "../Provider/SidebarProvider";
-import { revalidatePath } from "next/cache";
-// Define Zod schema
-const ProductZodSchema = z.object({
-  _id: z.string(),
-  product: z.string().min(1, {
-    message: "Field is required",
-  }),
-  price_range: z.object({
-    min_price: z.string().min(1, {
-      message: "Field is required",
-    }),
-    max_price: z.string().min(1, {
-      message: "Field is required",
-    }),
-  }),
-  shipping_info: z.string().optional(),
-  quantity: z.string().min(1, {
-    message: "Field is required",
-  }),
-
-  unit: z.string().min(1, {
-    message: "Field is required",
-  }),
-  category: z.string().min(1, {
-    message: "Field is required",
-  }),
-  homePageType: z.string().optional(),
-  description: z.string().min(1, {
-    message: "Field is required",
-  }),
-  main_description: z.string().optional(),
-  varient: z
-    .array(
-      z.object({
-        unit: z.string(),
-        price_range: z
-          .object({
-            min_price: z.string(),
-            max_price: z.string(),
-          })
-          .optional(),
-      })
-    )
-    .optional(),
-  additional_information: z
-    .object({
-      brand: z.string().optional(),
-      origin: z.string().optional(),
-      nutritional_info: z.object({
-        calories: z.string().optional(),
-        protein: z.string().optional(),
-        carbohydrates: z.string().optional(),
-        fat: z.string().optional(),
-        weight: z.string().optional(),
-      }),
-      storage_instructions: z.string().optional(),
-      healthy_alternative: z.string().optional(),
-      flavor: z.string().optional(),
-      benefits: z.string().optional(),
-      delivery_info: z.string().optional(),
-    })
-    .optional(),
-});
+import { ProductZodSchema } from "@/lib/schemas/product.schema";
+import Tiptap from "./RichText/Tiptap";
+import { PlusSquare, Trash2 } from "lucide-react";
 
 const CreateUpdateForm = ({
   _id,
@@ -151,9 +88,9 @@ const CreateUpdateForm = ({
     name: "varient",
     control: form.control,
   });
-
   const onSubmit = async (values: z.infer<typeof ProductZodSchema>) => {
     try {
+      console.log(values);
       setIsLoading(true);
       const formateData = { ...values, images: imgs };
       const { data } = await axios.post(
@@ -357,6 +294,27 @@ const CreateUpdateForm = ({
               )}
             />
 
+            <div className="col-span-1 md:col-span-2  lg:col-span-3">
+              <FormField
+                control={form.control}
+                name="main_description"
+                disabled={isLoading}
+                render={({ field }) => (
+                  <FormItem className="unset">
+                    <FormLabel className="text-black-800 ">
+                      Long description
+                    </FormLabel>
+                    <FormControl>
+                      <Tiptap
+                        description={field.value || ""}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="description"
@@ -478,6 +436,7 @@ const CreateUpdateForm = ({
               </div>
             </div>
           </div>
+
           <div className="flex justify-between items-end  ">
             <ImageUpload
               values={imgs}
