@@ -294,6 +294,23 @@ const CreateUpdateForm = ({
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="description"
+              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-black-800 ">
+                    Short description
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Tell us about products" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="col-span-1 md:col-span-2  lg:col-span-3">
               <FormField
                 control={form.control}
@@ -315,22 +332,6 @@ const CreateUpdateForm = ({
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="description"
-              disabled={isLoading}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-black-800 ">
-                    Short description
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Tell us about products" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="col-span-1 md:col-span-2  lg:col-span-3">
               <h1>Products varient info</h1>
               <div className=" flex flex-col">
