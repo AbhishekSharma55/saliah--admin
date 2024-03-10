@@ -25,7 +25,7 @@ const DeleteProductAlerts = () => {
       const { data } = await axios.delete(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${productId}`
       );
-      if (data) {
+      if (data?.message) {
         toast.success(data.message);
         router.refresh();
       }
